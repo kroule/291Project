@@ -26,6 +26,58 @@ DATABASE_INFO = [('./A4v100.db', 100),
 countries = []
 upc_codes = []
 
+#The below two functions do the same thing (differ in performance for some reason), but the hardcoded is easier to read
+
+def runQueriesHardCoded():
+    Q1 = """SELECT partPrice FROM Parts WHERE partNumber=?"""
+    Q2 = """SELECT partPrice FROM Parts WHERE needsPart=?"""
+    
+    for name, cardinality in DATABASE_INFO:
+        # Connect to each database in the table
+        connection = sqlite3.connect(name)
+        cursor = connection.cursor()
+        
+        ############################# Start of first query #############################
+        
+        #start timer
+        time_start = time.perf_counter()
+        
+        # Run first query 100 times
+        for numExecutions in range(0,100):
+            randPartNumber = random.choice(upc_codes)  
+            cursor.execute(Q1, (randPartNumber,))
+            
+        connection.commit()
+        
+        #end timer and calculate difference between times
+        time_end = time.perf_counter()
+        avg_time = ((time_end-time_start)*1000)
+        print("Average time to run Q1 100 times in database {}: {} milliseconds ({} millieseconds per query)".format(name, avg_time, avg_time/100))
+        ############################# End of first query #############################
+        
+        ############################# Start of second query #############################
+        
+        #start timer
+        time_start = time.perf_counter()
+        
+        # Run second query 100 times
+        for numExecutions in range(0,100):
+            randPartNumber = random.choice(upc_codes)  
+            cursor.execute(Q2, (randPartNumber,))
+            
+        connection.commit()
+        
+        #ebd tuner abd calculate difference between times
+        time_end = time.perf_counter()
+        avg_time = ((time_end-time_start)*1000)
+        print("Average time to run Q1 100 times in database {}: {} milliseconds ({} millieseconds per query)".format(name, avg_time, avg_time/100))
+        connection.commit()
+        ############################# End of second query #############################
+        
+        # Close db connection, loop back to top and open next database
+        connection.close()
+    
+
 def runQueries():
     #Q1: Given a randomly selected UPC code U from the UPC database find the price of part in Parts that has partNumber = U
     #Q2: Given a randomly selected UPC code U from the UPC database find the price of part in Parts that has needsPart = U
@@ -48,8 +100,6 @@ def runQueries():
             print("Average time to run {} 100 times in database {}: {} milliseconds ({} millieseconds per query)".format(query, name, avg_time, avg_time/100))
             
         connection.commit()
-        
-        
         connection.close()
 
 def loadUPC():
@@ -76,7 +126,7 @@ def main():
     print("Executing Part 1")
     loadCountries()
     loadUPC()
-    runQueries()
+    runQueriesHardCoded()
     
 
 main()
