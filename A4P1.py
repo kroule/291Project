@@ -11,7 +11,7 @@
 #Tasks:
 #	Re-run queries Q1 and Q2 100 times against each version of table Parts and record the average query time required for the dbms to answer both queries using each version of table Parts.
 #	Compare the two tables (for queries Q1 and Q2) in Task 3 contrasting the results obtained. 
-#	Compare the trends observed in Task 4 to the trends observed in Task 2. Discuss in which cases the space cost of the index seemed like a worthwhile "investment.”
+#	Compare the trends observed in Task 4 to the trends observed in Task 2. Discuss in which cases the space cost of the index seemed like a worthwhile "investment"
 
 import sqlite3
 import time
@@ -44,8 +44,8 @@ def runQueries():
                 val = cursor.fetchone()
             connection.commit()
             time_end = time.perf_counter()
-            avg_time = (time_end-time_start)
-            print("Average time to run {} 100 times in database {}: {} seconds ({} seconds per query)".format(query, name, avg_time, avg_time/100))
+            avg_time = ((time_end-time_start)*1000)
+            print("Average time to run {} 100 times in database {}: {} milliseconds ({} millieseconds per query)".format(query, name, avg_time, avg_time/100))
             
         connection.commit()
         
