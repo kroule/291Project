@@ -15,6 +15,7 @@ def connect(path):
     return
 
 def main():
-    pass
-
+    global connection, cursor
+	printf("Executing Part 2, task")
+	
 main()
