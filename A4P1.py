@@ -72,7 +72,7 @@ def runQueriesHardCoded():
         #ebd tuner abd calculate difference between times
 		time_end = time.perf_counter()
 		avg_time = ((time_end-time_start)*1000)
-		print("Average time to run Q1 100 times in database {}: {} milliseconds ({} millieseconds per query)".format(name, avg_time, avg_time/100))		
+		print("Average time to run Q2 100 times in database {}: {} milliseconds ({} millieseconds per query)".format(name, avg_time, avg_time/100))		
 		connection.commit()
         ############################# End of second query #############################
 	
@@ -107,7 +107,7 @@ def runQueryIndex():
 		connection.commit()
 		endTimeIndex = time.perf_counter()
 		avgTimeIndex = ((endTimeIndex-startTimeIndex)*1000)
-		print("Average time to run Query 1 100 times in database {}: {} millieseconds ({}milliseconds per query)".format(name, avgTimeIndex, avgTimeIndex/100))
+		print("Average time to run Query 2 100 times in database {}: {} millieseconds ({}milliseconds per query)".format(name, avgTimeIndex, avgTimeIndex/100))
 		connection.commit()
 		connection.close()
 """
