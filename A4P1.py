@@ -98,7 +98,7 @@ def runQueryIndex():
 		connection.commit()
 		endTimeIndex = time.perf_counter()
 		avgTimeIndex = ((endTimeIndex-startTimeIndex)*1000)
-		print("Average time to run Query 1 100 times in database {}: {} millieseconds ({}milliseconds per query)".format(name, avgTimeIndex, avgTimeIndex/100))
+		print("Average time to run Query 1 100 times in database {}: {} millieseconds ({} milliseconds per query)".format(name, avgTimeIndex, avgTimeIndex/100))
 
 		startTimeIndex = time.perf_counter()
 		for numRunsIndex in range(0, 100):
@@ -107,7 +107,7 @@ def runQueryIndex():
 		connection.commit()
 		endTimeIndex = time.perf_counter()
 		avgTimeIndex = ((endTimeIndex-startTimeIndex)*1000)
-		print("Average time to run Query 2 100 times in database {}: {} millieseconds ({}milliseconds per query)".format(name, avgTimeIndex, avgTimeIndex/100))
+		print("Average time to run Query 2 100 times in database {}: {} millieseconds ({} milliseconds per query)".format(name, avgTimeIndex, avgTimeIndex/100))
 		connection.commit()
 		connection.close()
 """
