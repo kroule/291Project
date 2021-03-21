@@ -30,32 +30,33 @@ def runQuery():
 
 		connection.close()
 
-
-"""
-def loadUPC():
+def runQueryIndex():
 	global connection, cursor
-	connection = sqlite3.connect("./UPC.db")
-	cursor = connection.cursor()
-	cursor.execute("SELECT * FROM upc")
-	for value in cursor.fetchall():
-		upc_code = value[0]
-		upc_codes.append(upc_code)
-	connection.commit()
-	connection.close()
+	Query = """SELECT AVG(partPrice) FROM Parts GROUP BY madeIn"""
+	dropIndex = ("DROP INDEX IF EXISTS idxNeedsParts;")
+	createIndex = ("CREATE INDEX idxMadeIn ON Parts ( MadeIn );")
 
-def loadCOuntries():
-	global connection, cursor
-	connection = sqlite3.connect("./Country.db")
-	cursor = connection.cursor()
-	cursor.execute("SELECT * FROM country")
-	for value in cursor.fetchall():
-		country_code = value[0]
-		countries.append(country_code)
-	connection.commit()
-	connection.close() 
-"""
+	for name, cardinality in DATABASE_INFO:
+
+		connection = sqlite3.connect(name)
+		cursor = connection.cursor()
+		cursor.execute(dropIndex)
+		cursor.execute(createIndex)
+
+		startTimer = time.perf_counter()
+		for queryExecution in range(0, 100):
+			cursor.execute(Query)
+
+		connection.commit()
+		stopTimer = time.perf_counter()
+		avgQueryTime = ((stopTimer - startTimer)*1000)
+		print("Average time to run query 100 times in datatbase {}: {} milliseconds ({} milliseconds per query)".format(name, avgQueryTime, avgQueryTime/100))
+
+		connection.close()
 def main():
 	global connection, cursor
-
+	print("Executing part 2, task 1")
 	runQuery()
+	print("Executing part 2, task 2")
+	runQueryIndex()
 main()
