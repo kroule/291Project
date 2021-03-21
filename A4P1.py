@@ -34,11 +34,15 @@ def runQueriesHardCoded():
 	Q1 = """SELECT partPrice FROM Parts WHERE partNumber=?"""
 	
 	Q2 = """SELECT partPrice FROM Parts WHERE needsPart=?"""
+	dropIndex1 = ("DROP INDEX IF EXISTS idxNeedsParts;")#Drop index if they exist, if not they could affect the result.
+	dropIndex2 = ("DROP INDEX IF EXISTS idxMadeIn;")
+
 	for name, cardinality in DATABASE_INFO:
         # Connect to each database in the table
 		connection = sqlite3.connect(name)
 		cursor = connection.cursor()
-        
+        cursor.execute(dropIndex1) #dropping indexs
+		cursor.execute(dropIndex2)
         ############################# Start of first query #############################
         
         #start timer
@@ -81,7 +85,10 @@ def runQueriesHardCoded():
     
 def runQueryIndex():
 	global connection, cursor
-	createIndex = ("CREATE INDEX IF NOT EXISTS idxNeedsPart ON Parts(needsPart);")
+	createIndex = ("CREATE INDEX IF NOT EXISTS idxNeedsPart ON Parts(needsPart);") #create the index we want to speed up query.
+
+	dropIndex1 = ("DROP INDEX IF EXISTS idxNeedsParts;") #Drop index if they exist
+	dropIndex2 = ("DROP INDEX IF EXISTS idxMadeIn;")
 
 	Query1 = """SELECT partPrice FROM Parts WHERE partNumber=?"""
 	Query2 = """SELECT partPrice FROM Parts WHERE needsPart=?"""
@@ -89,7 +96,11 @@ def runQueryIndex():
 	for name, cardinality in DATABASE_INFO:	
 		connection = sqlite3.connect(name)
 		cursor = connection.cursor()
-		cursor.execute(createIndex)
+
+		cursor.execute(dropIndex1)#dropping indexs
+		cursor.execute(dropIndex2)
+
+		cursor.execute(createIndex)#creating new index
 		startTimeIndex = time.perf_counter()
 		
 		for numRunsIndex in range(0, 100):
