@@ -41,8 +41,10 @@ def runQueriesHardCoded():
         # Connect to each database in the table
 		connection = sqlite3.connect(name)
 		cursor = connection.cursor()
-        cursor.execute(dropIndex1) #dropping indexs
+	
+		cursor.execute(dropIndex1) #dropping indexs
 		cursor.execute(dropIndex2)
+
         ############################# Start of first query #############################
         
         #start timer
