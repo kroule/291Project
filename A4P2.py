@@ -12,12 +12,14 @@ DATABASE_INFO = [('./A4v100.db', 100), ('./A4v1k.db', 1000),('./A4v10k.db', 1000
 def runQuery():
 	global connection, cursor
 	Query = """SELECT AVG(partPrice) FROM Parts GROUP BY madeIn"""
-	dropIndex = ("DROP INDEX IF EXISTS idxNeedsParts;")
-
+	dropIndex1 = ("DROP INDEX IF EXISTS idxNeedsParts;")#Drop index if exists, if this does not happen, could alter results
+	dropIndex2 = ("DROP INDEX IF EXISTS idxMadeIN;")
 	for name, cardinality in DATABASE_INFO:
 		connection = sqlite3.connect(name)
 		cursor = connection.cursor()
-		cursor.execute(dropIndex)
+
+		cursor.execute(dropIndex1)#dropping indexs
+		cursor.execute(dropIndex2)
 
 		startTimer = time.perf_counter()
 		for queryExecution in range(0, 100):
@@ -33,15 +35,19 @@ def runQuery():
 def runQueryIndex():
 	global connection, cursor
 	Query = """SELECT AVG(partPrice) FROM Parts GROUP BY madeIn"""
-	dropIndex = ("DROP INDEX IF EXISTS idxNeedsParts;")
-	createIndex = ("CREATE INDEX idxMadeIn ON Parts ( MadeIn );")
+	dropIndex1 = ("DROP INDEX IF EXISTS idxNeedsParts;")#Drop index if exists, if this does not happen, could alter results
+	dropIndex2 = ("DROP INDEX IF EXISTS idxMadeIn;")
+
+	createIndex = ("CREATE INDEX idxMadeIn ON Parts ( MadeIn );") #create index that we want to speed up query time.
 
 	for name, cardinality in DATABASE_INFO:
 
 		connection = sqlite3.connect(name)
 		cursor = connection.cursor()
-		cursor.execute(dropIndex)
-		cursor.execute(createIndex)
+		
+		cursor.execute(dropIndex1)#dropping indexs
+		cursor.execute(dropIndex2)
+		cursor.execute(createIndex)#creating index
 
 		startTimer = time.perf_counter()
 		for queryExecution in range(0, 100):
