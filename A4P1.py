@@ -36,6 +36,8 @@ def runQueriesHardCoded():
 	Q2 = """SELECT partPrice FROM Parts WHERE needsPart=?"""
 	dropIndex1 = ("DROP INDEX IF EXISTS idxNeedsParts;")#Drop index if they exist, if not they could affect the result.
 	dropIndex2 = ("DROP INDEX IF EXISTS idxMadeIn;")
+	dropIndex3 = ("DROP INDEX IF EXISTS Optimizeidx3;")
+	dropIndex4 = ("DROP INDEX IF EXISTS Optimizeidx4;")
 
 	for name, cardinality in DATABASE_INFO:
         # Connect to each database in the table
@@ -44,6 +46,8 @@ def runQueriesHardCoded():
 	
 		cursor.execute(dropIndex1) #dropping indexs
 		cursor.execute(dropIndex2)
+		cursor.execute(dropIndex3)
+		cursor.execute(dropIndex4)
 
         ############################# Start of first query #############################
         
@@ -85,12 +89,17 @@ def runQueriesHardCoded():
         # Close db connection, loop back to top and open next database
 		connection.close()
     
+
+#run query with index 
+
 def runQueryIndex():
 	global connection, cursor
 	createIndex = ("CREATE INDEX IF NOT EXISTS idxNeedsPart ON Parts(needsPart);") #create the index we want to speed up query.
 
 	dropIndex1 = ("DROP INDEX IF EXISTS idxNeedsParts;") #Drop index if they exist
 	dropIndex2 = ("DROP INDEX IF EXISTS idxMadeIn;")
+	dropIndex3 = ("DROP INDEX IF EXISTS Optimizeidx3;")
+	dropIndex4 = ("DROP INDEX IF EXISTS Optimizeidx4;")
 
 	Query1 = """SELECT partPrice FROM Parts WHERE partNumber=?"""
 	Query2 = """SELECT partPrice FROM Parts WHERE needsPart=?"""
@@ -101,7 +110,8 @@ def runQueryIndex():
 
 		cursor.execute(dropIndex1)#dropping indexs
 		cursor.execute(dropIndex2)
-
+		cursor.execute(dropIndex3)
+		cursor.execute(dropIndex4)
 		cursor.execute(createIndex)#creating new index
 		startTimeIndex = time.perf_counter()
 		
