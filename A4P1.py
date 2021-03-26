@@ -135,31 +135,9 @@ def runQueryIndex():
 		print("Average time to run Query 2 100 times in database {}: {} millieseconds ({} milliseconds per query)".format(name, avgTimeIndex, avgTimeIndex/100))
 		connection.commit()
 		connection.close()
-"""
-def runQueries():
-	global connection, cursor
-    #Q1: Given a randomly selected UPC code U from the UPC database find the price of part in Parts that has partNumber = U
-    #Q2: Given a randomly selected UPC code U from the UPC database find the price of part in Parts that has needsPart = U
-	queries = ["SELECT partPrice FROM Parts WHERE partNumber=?", "SELECT partPrice FROM Parts WHERE needsPart=?"]
-    
-    #Run each query 100 times (each time using a randomly generated value for U) against each version of table Parts and record the average query time required for answering both queries using each version of table Parts.
-	for name, cardinality in DATABASE_INFO:
-		connection = sqlite3.connect(name)
-		cursor = connection.cursor()
-        
-		for query in queries:
-			time_start = time.perf_counter()
-			for numExecutions in range(0,100):
-				randPartNumber = random.choice(upc_codes)  
-				cursor.execute(query, (randPartNumber,))
-				val = cursor.fetchone()
-			connection.commit()
-			time_end = time.perf_counter()
-			avg_time = ((time_end-time_start)*1000)
-			print("Average time to run {} 100 times in database {}: {} milliseconds ({} millieseconds per query)".format(query, name, avg_time, avg_time/100))
-		connection.commit()
-		connection.close()
-"""
+
+
+
 def loadUPC():
 	global connection, cursor
 	connection = sqlite3.connect("./UPC.db")
